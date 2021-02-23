@@ -95,5 +95,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart1"
+        android:layout_width="368sp"
+        android:layout_height="250sp"
+        android:layout_below="@+id/thirdLayout"
+        android:layout_marginTop="250dp"
+        android:orientation="horizontal">
+
+    </com.github.mikephil.charting.charts.LineChart>
+
 
 </RelativeLayout>
