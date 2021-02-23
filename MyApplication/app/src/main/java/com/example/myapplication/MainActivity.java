@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private Sensor accelerometer, mGyro, mMagno;
 
-    //Operator to set sensors go on/off. Default: OFF
+    //Operator to set sensors on/off. Default: OFF
     boolean updating = false;
 
     TextView xValue, yValue, zValue, xGyroValue, yGyroValue, zGyroValue, xMagnoValue, yMagnoValue, zMagnoValue;
@@ -92,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Button secondbutton = findViewById(R.id.secondbutton);
         secondbutton.setOnClickListener(v -> {
             updating = false;
+            //To clear the view when data is not needed
             xValue.setText(" ");
             yValue.setText(" ");
             zValue.setText(" ");
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (updating) {
             if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
                 Log.d(TAG, "X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
+                //Substrings are made only for displaying less decimal places
                 xValue.setText(("xValue:" + sensorEvent.values[0]).substring(0,11));
                 yValue.setText(("yValue:" + sensorEvent.values[1]).substring(0,11));
                 zValue.setText(("zValue:" + sensorEvent.values[2]).substring(0,11));
