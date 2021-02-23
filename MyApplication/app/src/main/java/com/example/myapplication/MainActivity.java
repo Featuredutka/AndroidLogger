@@ -7,9 +7,18 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.util.LinkedList;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -25,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     boolean updating = false;
 
     TextView xValue, yValue, zValue, xGyroValue, yGyroValue, zGyroValue, xMagnoValue, yMagnoValue, zMagnoValue;
+
+    FileWriter writer;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -51,8 +62,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (accelerometer != null) {
             sensorManager.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d(TAG, "onCreate: Registered accelerometer listener");
-        }
-        else {
+        } else {
             xValue.setText("Accelerometer not supported");
             yValue.setText("Accelerometer not supported");
             zValue.setText("Accelerometer not supported");
@@ -62,8 +72,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (mGyro != null) {
             sensorManager.registerListener(MainActivity.this, mGyro, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d(TAG, "onCreate: Registered Gyro listener");
-        }
-        else {
+        } else {
             xGyroValue.setText("Gyro not supported");
             yGyroValue.setText("Gyro not supported");
             zGyroValue.setText("Gyro not supported");
@@ -73,8 +82,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (mMagno != null) {
             sensorManager.registerListener(MainActivity.this, mMagno, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d(TAG, "onCreate: Registered Magno listener");
-        }
-        else {
+        } else {
             xMagnoValue.setText("Magno not supported");
             yMagnoValue.setText("Magno not supported");
             zMagnoValue.setText("Magno not supported");
@@ -82,7 +90,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         //START button actions with v lambda func
         Button firstbutton = findViewById(R.id.firstbutton);
-        firstbutton.setOnClickListener(v -> updating = true);
+        firstbutton.setOnClickListener(v -> {
+            updating = true;
+            try {
+                writer = new FileWriter(new File(getStorageDir(), "sensors_" + System.currentTimeMillis() + ".csv"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
 
         //END button actions with v lambda func
         Button secondbutton = findViewById(R.id.secondbutton);
@@ -99,8 +115,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             xMagnoValue.setText(" ");
             yMagnoValue.setText(" ");
             zMagnoValue.setText(" ");
+
+            try {
+                writer.close();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
+    }
+
+    private File getStorageDir() {
+
+        File file = getFilesDir();
+        return file;
     }
 
     @Override
@@ -108,13 +137,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor sensor = sensorEvent.sensor;
         if (updating) {
             if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
                 Log.d(TAG, "X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
+                try {
+                    writer.write(String.format("%d; ACC; %f; %f; %f; %f; %f; %f\n", sensorEvent.timestamp, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2], 0.f, 0.f, 0.f));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 xValue.setText("xValue:" + sensorEvent.values[0]);
                 yValue.setText("yValue:" + sensorEvent.values[1]);
                 zValue.setText("zValue:" + sensorEvent.values[2]);
