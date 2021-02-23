@@ -9,6 +9,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
@@ -18,6 +20,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private SensorManager sensorManager;
 
     private Sensor accelerometer, mGyro, mMagno;
+
+    //Operator to set sensors go on/off. Default: OFF
+    boolean updating = false;
 
     TextView xValue, yValue, zValue, xGyroValue, yGyroValue, zGyroValue, xMagnoValue, yMagnoValue, zMagnoValue;
 
@@ -40,12 +45,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         Log.d(TAG, "onCreate: Initializing Sensor Services");
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        
+
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        if(accelerometer != null) {
+        if (accelerometer != null) {
             sensorManager.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d(TAG, "onCreate: Registered accelerometer listener");
-        } else {
+        }
+        else {
             xValue.setText("Accelerometer not supported");
             yValue.setText("Accelerometer not supported");
             zValue.setText("Accelerometer not supported");
@@ -55,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (mGyro != null) {
             sensorManager.registerListener(MainActivity.this, mGyro, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d(TAG, "onCreate: Registered Gyro listener");
-        } else {
+        }
+        else {
             xGyroValue.setText("Gyro not supported");
             yGyroValue.setText("Gyro not supported");
             zGyroValue.setText("Gyro not supported");
@@ -65,11 +72,42 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (mMagno != null) {
             sensorManager.registerListener(MainActivity.this, mMagno, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d(TAG, "onCreate: Registered Magno listener");
-        } else {
+        }
+        else {
             xMagnoValue.setText("Magno not supported");
             yMagnoValue.setText("Magno not supported");
             zMagnoValue.setText("Magno not supported");
         }
+
+        //START button actions
+        Button firstbutton = findViewById(R.id.firstbutton);
+        firstbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updating = true;
+            }
+        });
+
+        //END button actions
+        Button secondbutton = findViewById(R.id.secondbutton);
+        secondbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updating = false;
+                xValue.setText(" ");
+                yValue.setText(" ");
+                zValue.setText(" ");
+
+                xGyroValue.setText(" ");
+                yGyroValue.setText(" ");
+                zGyroValue.setText(" ");
+
+                xMagnoValue.setText(" ");
+                yMagnoValue.setText(" ");
+                zMagnoValue.setText(" ");
+            }
+        });
+
     }
 
     @Override
@@ -80,20 +118,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor sensor = sensorEvent.sensor;
-
-        if (sensor.getType()==Sensor.TYPE_ACCELEROMETER) {
-            Log.d(TAG, "X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
-            xValue.setText("xValue:" + sensorEvent.values[0]);
-            yValue.setText("yValue:" + sensorEvent.values[1]);
-            zValue.setText("zValue:" + sensorEvent.values[2]);
-        } else if (sensor.getType()==Sensor.TYPE_GYROSCOPE) {
-            xGyroValue.setText("xGyroValue:" + sensorEvent.values[0]);
-            yGyroValue.setText("yGyroValue:" + sensorEvent.values[1]);
-            zGyroValue.setText("zGyroValue:" + sensorEvent.values[2]);
-        } else if (sensor.getType()==Sensor.TYPE_MAGNETIC_FIELD) {
-            xMagnoValue.setText("xMagnoValue:" + sensorEvent.values[0]);
-            yMagnoValue.setText("yMagnoValue:" + sensorEvent.values[1]);
-            zMagnoValue.setText("zMagnoValue:" + sensorEvent.values[2]);
+        if (updating) {
+            if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+                Log.d(TAG, "X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
+                xValue.setText("xValue:" + sensorEvent.values[0]);
+                yValue.setText("yValue:" + sensorEvent.values[1]);
+                zValue.setText("zValue:" + sensorEvent.values[2]);
+            } else if (sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+                xGyroValue.setText("xGyroValue:" + sensorEvent.values[0]);
+                yGyroValue.setText("yGyroValue:" + sensorEvent.values[1]);
+                zGyroValue.setText("zGyroValue:" + sensorEvent.values[2]);
+            } else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+                xMagnoValue.setText("xMagnoValue:" + sensorEvent.values[0]);
+                yMagnoValue.setText("yMagnoValue:" + sensorEvent.values[1]);
+                zMagnoValue.setText("zMagnoValue:" + sensorEvent.values[2]);
+            }
         }
     }
 
