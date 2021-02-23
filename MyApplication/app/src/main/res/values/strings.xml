@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">My Application</string>
-    <string name="click_button">Click Button</string>
+    <string name="start">Start</string>
+    <string name="end">End</string>
 </resources>

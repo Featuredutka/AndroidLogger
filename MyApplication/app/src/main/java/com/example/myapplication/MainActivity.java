@@ -1,7 +1,6 @@
 package com.example.myapplication;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -9,14 +8,15 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     private static final String TAG = "MainActivity";
-    
+
     private SensorManager sensorManager;
 
     private Sensor accelerometer, mGyro, mMagno;
@@ -26,22 +26,23 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     TextView xValue, yValue, zValue, xGyroValue, yGyroValue, zGyroValue, xMagnoValue, yMagnoValue, zMagnoValue;
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        xValue = (TextView) findViewById(R.id.xValue);
-        yValue = (TextView) findViewById(R.id.yValue);
-        zValue = (TextView) findViewById(R.id.zValue);
+        xValue = findViewById(R.id.xValue);
+        yValue = findViewById(R.id.yValue);
+        zValue = findViewById(R.id.zValue);
 
-        xGyroValue = (TextView) findViewById(R.id.xGyroValue);
-        yGyroValue = (TextView) findViewById(R.id.yGyroValue);
-        zGyroValue = (TextView) findViewById(R.id.zGyroValue);
+        xGyroValue = findViewById(R.id.xGyroValue);
+        yGyroValue = findViewById(R.id.yGyroValue);
+        zGyroValue = findViewById(R.id.zGyroValue);
 
-        xMagnoValue = (TextView) findViewById(R.id.xMagnoValue);
-        yMagnoValue = (TextView) findViewById(R.id.yMagnoValue);
-        zMagnoValue = (TextView) findViewById(R.id.zMagnoValue);
+        xMagnoValue = findViewById(R.id.xMagnoValue);
+        yMagnoValue = findViewById(R.id.yMagnoValue);
+        zMagnoValue = findViewById(R.id.zMagnoValue);
 
         Log.d(TAG, "onCreate: Initializing Sensor Services");
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -79,33 +80,25 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             zMagnoValue.setText("Magno not supported");
         }
 
-        //START button actions
+        //START button actions with v lambda func
         Button firstbutton = findViewById(R.id.firstbutton);
-        firstbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updating = true;
-            }
-        });
+        firstbutton.setOnClickListener(v -> updating = true);
 
-        //END button actions
+        //END button actions with v lambda func
         Button secondbutton = findViewById(R.id.secondbutton);
-        secondbutton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updating = false;
-                xValue.setText(" ");
-                yValue.setText(" ");
-                zValue.setText(" ");
+        secondbutton.setOnClickListener(v -> {
+            updating = false;
+            xValue.setText(" ");
+            yValue.setText(" ");
+            zValue.setText(" ");
 
-                xGyroValue.setText(" ");
-                yGyroValue.setText(" ");
-                zGyroValue.setText(" ");
+            xGyroValue.setText(" ");
+            yGyroValue.setText(" ");
+            zGyroValue.setText(" ");
 
-                xMagnoValue.setText(" ");
-                yMagnoValue.setText(" ");
-                zMagnoValue.setText(" ");
-            }
+            xMagnoValue.setText(" ");
+            yMagnoValue.setText(" ");
+            zMagnoValue.setText(" ");
         });
 
     }
@@ -115,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor sensor = sensorEvent.sensor;
