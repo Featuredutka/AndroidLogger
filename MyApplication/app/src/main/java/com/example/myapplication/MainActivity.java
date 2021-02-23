@@ -119,20 +119,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (updating) {
             if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
                 Log.d(TAG, "X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
-                xValue.setText("xValue:" + sensorEvent.values[0]);
-                yValue.setText("yValue:" + sensorEvent.values[1]);
-                zValue.setText("zValue:" + sensorEvent.values[2]);
+                xValue.setText(("xValue:" + sensorEvent.values[0]).substring(0,11));
+                yValue.setText(("yValue:" + sensorEvent.values[1]).substring(0,11));
+                zValue.setText(("zValue:" + sensorEvent.values[2]).substring(0,11));
             } else if (sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-                xGyroValue.setText("xGyroValue:" + sensorEvent.values[0]);
-                yGyroValue.setText("yGyroValue:" + sensorEvent.values[1]);
-                zGyroValue.setText("zGyroValue:" + sensorEvent.values[2]);
+                xGyroValue.setText(("xGyroValue:" + sensorEvent.values[0]).substring(0,14));
+                yGyroValue.setText(("yGyroValue:" + sensorEvent.values[1]).substring(0,14));
+                zGyroValue.setText(("zGyroValue:" + sensorEvent.values[2]).substring(0,14));
             } else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-                xMagnoValue.setText("xMagnoValue:" + sensorEvent.values[0]);
-                yMagnoValue.setText("yMagnoValue:" + sensorEvent.values[1]);
-                zMagnoValue.setText("zMagnoValue:" + sensorEvent.values[2]);
+                xMagnoValue.setText(("xMagnoValue:" + sensorEvent.values[0]).substring(0,16));
+                yMagnoValue.setText(("yMagnoValue:" + sensorEvent.values[1]).substring(0,16));
+                zMagnoValue.setText(("zMagnoValue:" + sensorEvent.values[2]).substring(0,16));
             }
         }
     }
-
     
 } 
