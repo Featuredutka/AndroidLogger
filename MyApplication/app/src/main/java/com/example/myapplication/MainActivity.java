@@ -19,6 +19,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     TextView xValue, yValue, zValue, xGyroValue, yGyroValue, zGyroValue, xMagnoValue, yMagnoValue, zMagnoValue;
 
-    FileWriter writer;
+    FileWriter acc_writer, gyr_writer, mgn_writer;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -96,7 +100,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         firstbutton.setOnClickListener(v -> {
             updating = true;
             try {
-                writer = new FileWriter(new File(getStorageDir(), "sensors_" + System.currentTimeMillis() + ".csv"));
+                acc_writer = new FileWriter(new File(getStorageDir(), "acc_sensor" + labelFormatter() + ".csv"));
+                gyr_writer = new FileWriter(new File(getStorageDir(), "gyr_sensor" + labelFormatter() + ".csv"));
+                mgn_writer = new FileWriter(new File(getStorageDir(), "mgn_sensor" + labelFormatter() + ".csv"));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -120,13 +126,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             zMagnoValue.setText(" ");
 
             try {
-                writer.close();
+                acc_writer.close();
+                gyr_writer.close();
+                mgn_writer.close();
             }
             catch (IOException e) {
                 e.printStackTrace();
             }
         });
 
+    }
+    //Creating beautiful output file names
+    private String labelFormatter(){
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+        String test = ""+ts;
+        test = test.replaceAll(" ", "_");
+        return test.substring(0, test.length()-7);
     }
 
     private String getStorageDir() {
@@ -148,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
                 Log.d(TAG, "X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
                 try {
-                    writer.write(String.format("%d; ACC; %f; %f; %f; %f; %f; %f\n", sensorEvent.timestamp, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2], 0.f, 0.f, 0.f));
+                    acc_writer.write(String.format("%d; ACC; %f; %f; %f\n", sensorEvent.timestamp, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -156,10 +171,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 yValue.setText("yValue:" + sensorEvent.values[1]);
                 zValue.setText("zValue:" + sensorEvent.values[2]);
             } else if (sensor.getType() == Sensor.TYPE_GYROSCOPE) {
+                try {
+                    gyr_writer.write(String.format("%d; GYR; %f; %f; %f\n", sensorEvent.timestamp, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 xGyroValue.setText("xGyroValue:" + sensorEvent.values[0]);
                 yGyroValue.setText("yGyroValue:" + sensorEvent.values[1]);
                 zGyroValue.setText("zGyroValue:" + sensorEvent.values[2]);
             } else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+                try {
+                    mgn_writer.write(String.format("%d; MGN; %f; %f; %f\n", sensorEvent.timestamp, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 xMagnoValue.setText("xMagnoValue:" + sensorEvent.values[0]);
                 yMagnoValue.setText("yMagnoValue:" + sensorEvent.values[1]);
                 zMagnoValue.setText("zMagnoValue:" + sensorEvent.values[2]);
