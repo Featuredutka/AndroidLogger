@@ -16,15 +16,15 @@
         <TextView
             android:layout_width="100sp"
             android:layout_height="wrap_content"
-            android:id="@+id/xValue" />
+            android:id="@+id/xlValue" />
         <TextView
             android:layout_width="100sp"
             android:layout_height="wrap_content"
-            android:id="@+id/yValue" />
+            android:id="@+id/ylValue" />
         <TextView
             android:layout_width="100sp"
             android:layout_height="wrap_content"
-            android:id="@+id/zValue" />
+            android:id="@+id/zlValue" />
     </LinearLayout>
 
     <LinearLayout
@@ -32,6 +32,50 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/firstLayout"
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal"
+        android:padding="20sp">
+        <TextView
+            android:id="@+id/xValue"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/yValue"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/zValue"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/thirdLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/secondLayout"
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal"
+        android:padding="20sp">
+        <TextView
+            android:id="@+id/xlGyroValue"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/ylGyroValue"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/zlGyroValue"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/fourthLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thirdLayout"
         android:layout_marginTop="2dp"
         android:orientation="horizontal"
         android:padding="20sp">
@@ -50,10 +94,32 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/thirdLayout"
+        android:id="@+id/fifthLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/secondLayout"
+        android:layout_below="@+id/fourthLayout"
+        android:layout_marginTop="2dp"
+        android:orientation="horizontal"
+        android:padding="20sp">
+        <TextView
+            android:id="@+id/xlMagnoValue"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/ylMagnoValue"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/zlMagnoValue"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/sixthLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fifthLayout"
         android:layout_marginTop="2dp"
         android:orientation="horizontal"
         android:padding="20sp">
@@ -71,12 +137,14 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
+
+
     <Button
         android:id="@+id/firstbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="0dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="400dp"
         android:text="@string/start"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -86,7 +154,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="110dp"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="400dp"
         android:text="@string/end"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

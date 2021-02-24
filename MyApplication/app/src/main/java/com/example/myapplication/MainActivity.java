@@ -38,7 +38,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //Operator to set sensors on/off. Default: OFF
     boolean updating = false;
 
-    TextView xValue, yValue, zValue, xGyroValue, yGyroValue, zGyroValue, xMagnoValue, yMagnoValue, zMagnoValue;
+    TextView xValue, yValue, zValue, xGyroValue, yGyroValue, zGyroValue, xMagnoValue, yMagnoValue, zMagnoValue,
+            xlValue, ylValue, zlValue, xlGyroValue, ylGyroValue, zlGyroValue, xlMagnoValue, ylMagnoValue, zlMagnoValue;
 
     FileWriter acc_writer, gyr_writer, mgn_writer;
 
@@ -62,13 +63,28 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         yMagnoValue = findViewById(R.id.yMagnoValue);
         zMagnoValue = findViewById(R.id.zMagnoValue);
 
+        xlValue = findViewById(R.id.xlValue);
+        ylValue = findViewById(R.id.ylValue);
+        zlValue = findViewById(R.id.zlValue);
+
+        xlGyroValue = findViewById(R.id.xlGyroValue);
+        ylGyroValue = findViewById(R.id.ylGyroValue);
+        zlGyroValue = findViewById(R.id.zlGyroValue);
+
+        xlMagnoValue = findViewById(R.id.xlMagnoValue);
+        ylMagnoValue = findViewById(R.id.ylMagnoValue);
+        zlMagnoValue = findViewById(R.id.zlMagnoValue);
+
         Log.d(TAG, "onCreate: Initializing Sensor Services");
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         if (accelerometer != null) {
             sensorManager.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d(TAG, "onCreate: Registered accelerometer listener");
+            xlValue.setText("X-Acc:");
+            ylValue.setText("Y-Acc:");
+            zlValue.setText("Z-Acc:");
         } else {
             xValue.setText("Accelerometer not supported");
             yValue.setText("Accelerometer not supported");
@@ -79,6 +95,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (mGyro != null) {
             sensorManager.registerListener(MainActivity.this, mGyro, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d(TAG, "onCreate: Registered Gyro listener");
+            xlGyroValue.setText("X-Gyr:");
+            ylGyroValue.setText("Y-Gyr:");
+            zlGyroValue.setText("Z-Gyr:");
         } else {
             xGyroValue.setText("Gyro not supported");
             yGyroValue.setText("Gyro not supported");
@@ -89,6 +108,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (mMagno != null) {
             sensorManager.registerListener(MainActivity.this, mMagno, SensorManager.SENSOR_DELAY_NORMAL);
             Log.d(TAG, "onCreate: Registered Magno listener");
+            xlMagnoValue.setText("X-Mgn:");
+            ylMagnoValue.setText("Y-Mgn:");
+            zlMagnoValue.setText("Z-Mgn:");
         } else {
             xMagnoValue.setText("Magno not supported");
             yMagnoValue.setText("Magno not supported");
@@ -150,7 +172,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         return this.getExternalFilesDir(null).getAbsolutePath();
     }
 
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
@@ -161,34 +182,34 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor sensor = sensorEvent.sensor;
         if (updating) {
-            if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            if (sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
                 Log.d(TAG, "X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
                 try {
                     acc_writer.write(String.format("%d; ACC; %f; %f; %f\n", sensorEvent.timestamp, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                xValue.setText("xValue:" + sensorEvent.values[0]);
-                yValue.setText("yValue:" + sensorEvent.values[1]);
-                zValue.setText("zValue:" + sensorEvent.values[2]);
+                xValue.setText(""+sensorEvent.values[0]);
+                yValue.setText(""+sensorEvent.values[1]);
+                zValue.setText(""+sensorEvent.values[2]);
             } else if (sensor.getType() == Sensor.TYPE_GYROSCOPE) {
                 try {
                     gyr_writer.write(String.format("%d; GYR; %f; %f; %f\n", sensorEvent.timestamp, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                xGyroValue.setText("xGyroValue:" + sensorEvent.values[0]);
-                yGyroValue.setText("yGyroValue:" + sensorEvent.values[1]);
-                zGyroValue.setText("zGyroValue:" + sensorEvent.values[2]);
+                xGyroValue.setText(""+sensorEvent.values[0]);
+                yGyroValue.setText(""+sensorEvent.values[1]);
+                zGyroValue.setText(""+sensorEvent.values[2]);
             } else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
                 try {
                     mgn_writer.write(String.format("%d; MGN; %f; %f; %f\n", sensorEvent.timestamp, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                xMagnoValue.setText("xMagnoValue:" + sensorEvent.values[0]);
-                yMagnoValue.setText("yMagnoValue:" + sensorEvent.values[1]);
-                zMagnoValue.setText("zMagnoValue:" + sensorEvent.values[2]);
+                xMagnoValue.setText(""+sensorEvent.values[0]);
+                yMagnoValue.setText(""+sensorEvent.values[1]);
+                zMagnoValue.setText(""+sensorEvent.values[2]);
             }
         }
     }
