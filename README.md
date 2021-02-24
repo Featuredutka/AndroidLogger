@@ -8,8 +8,8 @@ Android application for logging data from your phone sensors.
 #### Capabilities: 
 - [x]  Reading and showing sensors data
 - [x]  Switching sensor reading on/off
-- [ ]  Writing data to .csv files
-- [ ]  **???** Individual sensor plots
+- [x]  Writing data to .csv files
+- [ ]  Plotting data
 
 #### Developers:
 @Anna-Po<br /> @Featuredutka
