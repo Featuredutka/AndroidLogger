@@ -129,11 +129,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-    private File getStorageDir() {
-
-        File file = getFilesDir();
-        return file;
+    private String getStorageDir() {
+        //Path for saving files (~/Android/data/com.example.myapplication)
+        return this.getExternalFilesDir(null).getAbsolutePath();
     }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
