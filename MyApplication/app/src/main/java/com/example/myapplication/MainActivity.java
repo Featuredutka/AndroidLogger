@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     private Sensor accelerometer, mGyro, mMagno;
 
-    //Operator to set sensors go on/off. Default: OFF
+    //Operator to set sensors on/off. Default: OFF
     boolean updating = false;
 
     TextView xValue, yValue, zValue, xGyroValue, yGyroValue, zGyroValue, xMagnoValue, yMagnoValue, zMagnoValue;
@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         //To prevent app restarting on rotation
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_main);
 
         xValue = findViewById(R.id.xValue);
@@ -107,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Button secondbutton = findViewById(R.id.secondbutton);
         secondbutton.setOnClickListener(v -> {
             updating = false;
+            //To clear the view when data is not needed
             xValue.setText(" ");
             yValue.setText(" ");
             zValue.setText(" ");
@@ -147,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         if (updating) {
             if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
                 Log.d(TAG, "X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
+
                 try {
                     writer.write(String.format("%d; ACC; %f; %f; %f; %f; %f; %f\n", sensorEvent.timestamp, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2], 0.f, 0.f, 0.f));
                 } catch (IOException e) {
@@ -155,17 +158,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 xValue.setText("xValue:" + sensorEvent.values[0]);
                 yValue.setText("yValue:" + sensorEvent.values[1]);
                 zValue.setText("zValue:" + sensorEvent.values[2]);
-            } else if (sensor.getType() == Sensor.TYPE_GYROSCOPE) {
-                xGyroValue.setText("xGyroValue:" + sensorEvent.values[0]);
-                yGyroValue.setText("yGyroValue:" + sensorEvent.values[1]);
-                zGyroValue.setText("zGyroValue:" + sensorEvent.values[2]);
-            } else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-                xMagnoValue.setText("xMagnoValue:" + sensorEvent.values[0]);
-                yMagnoValue.setText("yMagnoValue:" + sensorEvent.values[1]);
-                zMagnoValue.setText("zMagnoValue:" + sensorEvent.values[2]);
-            }
+                //Substrings are made only for displaying less decimal places
+                xValue.setText(("xValue:" + sensorEvent.values[0]).substring(0,11));
+                yValue.setText(("yValue:" + sensorEvent.values[1]).substring(0,11));
+                zValue.setText(("zValue:" + sensorEvent.values[2]).substring(0,11));
         }
     }
-
     
 } 
