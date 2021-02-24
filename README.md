@@ -9,7 +9,7 @@ Android application for logging data from your phone sensors.
 - [x]  Reading and showing sensors data
 - [x]  Switching sensor reading on/off
 - [ ]  Writing data to .csv files
-- [ ]  **???** Individual sensor plots
+- [ ]  Plotting real-time data
 
 #### Developers:
 @Anna-Po<br /> @Featuredutka
