@@ -8,24 +8,16 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedList;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -176,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         return this.getExternalFilesDir(null).getAbsolutePath();
     }
 
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
@@ -188,9 +179,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Sensor sensor = sensorEvent.sensor;
         if (updating) {
             if (sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
-                Log.d(TAG, "X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
+                Log.d(TAG, " X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
                 try {
-                    acc_writer.write(String.format("%d; ACC; %f; %f; %f\n", (System.currentTimeMillis() - timeZeroPoint), sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
+                    acc_writer.write(String.format("%d; ACC; %f; %f; %f\n", (System.currentTimeMillis() - timeZeroPoint)/1000, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -199,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 zValue.setText(""+sensorEvent.values[2]);
             } else if (sensor.getType() == Sensor.TYPE_GYROSCOPE) {
                 try {
-                    gyr_writer.write(String.format("%d; GYR; %f; %f; %f\n", (System.currentTimeMillis() - timeZeroPoint), sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
+                    gyr_writer.write(String.format("%d; GYR; %f; %f; %f\n", (System.currentTimeMillis() - timeZeroPoint)/1000, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -208,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 zGyroValue.setText(""+sensorEvent.values[2]);
             } else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
                 try {
-                    mgn_writer.write(String.format("%d; MGN; %f; %f; %f\n", (System.currentTimeMillis() - timeZeroPoint), sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
+                    mgn_writer.write(String.format("%d; MGN; %f; %f; %f\n", (System.currentTimeMillis() - timeZeroPoint)/1000, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
