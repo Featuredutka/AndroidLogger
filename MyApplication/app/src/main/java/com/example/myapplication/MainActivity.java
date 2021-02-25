@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             xlValue, ylValue, zlValue, xlGyroValue, ylGyroValue, zlGyroValue, xlMagnoValue, ylMagnoValue, zlMagnoValue;
 
     FileWriter acc_writer, gyr_writer, mgn_writer;
+    //Variable to count time
+    long timeZeroPoint = 0;
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
         //To prevent app restarting on rotation
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
         setContentView(R.layout.activity_main);
 
         xValue = findViewById(R.id.xValue);
@@ -121,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Button firstbutton = findViewById(R.id.firstbutton);
         firstbutton.setOnClickListener(v -> {
             updating = true;
+            timeZeroPoint = System.currentTimeMillis();
             try {
                 acc_writer = new FileWriter(new File(getStorageDir(), "acc_sensor" + labelFormatter() + ".csv"));
                 gyr_writer = new FileWriter(new File(getStorageDir(), "gyr_sensor" + labelFormatter() + ".csv"));
@@ -172,6 +176,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         return this.getExternalFilesDir(null).getAbsolutePath();
     }
 
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
@@ -185,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if (sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
                 Log.d(TAG, "X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
                 try {
-                    acc_writer.write(String.format("%d; ACC; %f; %f; %f\n", sensorEvent.timestamp, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
+                    acc_writer.write(String.format("%d; ACC; %f; %f; %f\n", (System.currentTimeMillis() - timeZeroPoint), sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -194,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 zValue.setText(""+sensorEvent.values[2]);
             } else if (sensor.getType() == Sensor.TYPE_GYROSCOPE) {
                 try {
-                    gyr_writer.write(String.format("%d; GYR; %f; %f; %f\n", sensorEvent.timestamp, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
+                    gyr_writer.write(String.format("%d; GYR; %f; %f; %f\n", (System.currentTimeMillis() - timeZeroPoint), sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -203,7 +208,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 zGyroValue.setText(""+sensorEvent.values[2]);
             } else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
                 try {
-                    mgn_writer.write(String.format("%d; MGN; %f; %f; %f\n", sensorEvent.timestamp, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
+                    mgn_writer.write(String.format("%d; MGN; %f; %f; %f\n", (System.currentTimeMillis() - timeZeroPoint), sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
