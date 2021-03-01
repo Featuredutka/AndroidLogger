@@ -181,7 +181,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             if (sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
                 Log.d(TAG, " X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
                 try {
-                    acc_writer.write(String.format("%f, ACC, %f, %f, %f\n", (System.currentTimeMillis() - timeZeroPoint)/1000.0, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
+                    acc_writer.write(String.format("%f;%f;%f;%f\n", (System.currentTimeMillis() - timeZeroPoint)/1000.0, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 zValue.setText(String.format("%.2g",(sensorEvent.values[2])));
             } else if (sensor.getType() == Sensor.TYPE_GYROSCOPE) {
                 try {
-                    gyr_writer.write(String.format("%f, GYR, %f, %f, %f\n", (System.currentTimeMillis() - timeZeroPoint)/1000.0, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
+                    gyr_writer.write(String.format("%f;%f;%f;%f\n", (System.currentTimeMillis() - timeZeroPoint)/1000.0, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -199,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 zGyroValue.setText(String.format("%.2g",(sensorEvent.values[2])));
             } else if (sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
                 try {
-                    mgn_writer.write(String.format("%f, MGN, %f, %f, %f\n", (System.currentTimeMillis() - timeZeroPoint)/1000.0, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
+                    mgn_writer.write(String.format("%f;%f;%f;%f\n", (System.currentTimeMillis() - timeZeroPoint)/1000.0, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
