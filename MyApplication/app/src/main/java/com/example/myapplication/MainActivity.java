@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Log.d(TAG, "onCreate: Initializing Sensor Services");
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         if (accelerometer != null) {
             sensorManager.registerListener(MainActivity.this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);
             Log.d(TAG, "onCreate: Registered accelerometer listener");
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent sensorEvent) {
         Sensor sensor = sensorEvent.sensor;
         if (updating) {
-            if (sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
+            if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
                 Log.d(TAG, " X: " + sensorEvent.values[0] + "Y: " + sensorEvent.values[1] + "Z: " + sensorEvent.values[2]);
                 try {
                     acc_writer.write(String.format("%f;%f;%f;%f\n", (System.currentTimeMillis() - timeZeroPoint)/1000.0, sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2]));
